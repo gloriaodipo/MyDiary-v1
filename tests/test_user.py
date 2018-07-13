@@ -5,7 +5,7 @@ from .base import BaseClass
 SIGNUP_URL = '/api/v1/user/signup'
 LOGIN_URL = '/api/v1/user/login'
 
-class TestUserCase(BaseClass):
+class Test_User_Case(BaseClass):
     '''User test cases'''    
 
     def test_signup(self):

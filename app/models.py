@@ -14,4 +14,20 @@ class User():
             'username': self.username,
             'email': self.email,
             'password': self.password
-            }  
+            }
+
+class Entry():
+    entry_id = 1
+
+    def __init__(self, title, description):
+        self.id = Entry.entry_id
+        self.title = title
+        self.description = description
+        Entry.entry_id += 1
+
+    def entry_dict(self):
+        return{
+            'id': self.id,
+            'title': self.title,
+            'description': self.description
+    }        

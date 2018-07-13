@@ -2,6 +2,7 @@ class db():
     '''A mock database to store users and entries'''
 
     users = []
+    entries = []
     
     @classmethod
     def add_user(cls, user):
@@ -22,3 +23,19 @@ class db():
             if user.email == email:
                 return user
             return None
+
+    @classmethod
+    def add_entry(cls, entry):
+        cls.entries.append(entry)
+
+    @classmethod
+    def get_entry_by_id(cls, entry_id):
+        for entry in cls.entries:
+            if entry.entry_id == entry_id:
+                return entry
+            return None
+
+
+
+
+

@@ -1,7 +1,6 @@
 import unittest
 import json
-from . import create_app
-from . import db
+from . import create_app, db
 
 class BaseClass(unittest.TestCase):
     """This is the base class for test cases."""
@@ -18,7 +17,6 @@ class BaseClass(unittest.TestCase):
                     "password":"pass"
                     }
         self.entries = {
-                    "entry_id": 5,
                     "title": "Freaky friday",
                     "description": "Fun fun fun fun fun fun"
                     }
@@ -26,3 +24,4 @@ class BaseClass(unittest.TestCase):
     def tearDown(self):
         '''Clears the database'''
         users = []
+        entries = []
