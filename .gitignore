@@ -1,5 +1,9 @@
 .pytest_cache
 .env
 venv/
+.env
+.pytest_cache/
 __pycache__/
-*pyc
+app/__pycache__/
+app/__init__.pyc
+app/resources/__pycache__
