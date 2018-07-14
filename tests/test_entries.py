@@ -5,6 +5,10 @@ from .base import BaseClass
 SIGNUP_URL = '/api/v1/user/signup'
 LOGIN_URL = '/api/v1/user/login'
 ADD_ENTRY_URL = 'api/v1/entries'
+GET_SINGLE_URL = 'api/v1/entries/1'
+GET_ALL_URL = 'api/v1/entries'
+DELETE_URL = 'api/v1/entries/1'
+MODIFY_URL = 'api/vi/entries/1'
 
 
 class Test_Entry_Case(BaseClass):
@@ -25,7 +29,72 @@ class Test_Entry_Case(BaseClass):
         self.logged_in_user()
 
         response = self.client.post(ADD_ENTRY_URL,
-            data = json.dumps(self.entries_data), content_type = 'application/json')
+            data = json.dumps(self.entries), content_type = 'application/json')
         result = json.loads(response.data)
         self.assertEqual(result["message"], "Entry made")
         self.assertEqual(response.status_code, 201)
+
+    def test_get_single_entry(self):
+        '''Test API can get a single diary entry'''
+        self.logged_in_user()
+
+        response = self.client.post(ADD_ENTRY_URL,
+            data = json.dumps(self.entries), content_type = 'application/json')
+
+        response = self.client.get (GET_SINGLE_URL,
+            data = json.dumps(self.entries), content_type = 'application/json')
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_all(self):
+        '''Test API can get all diary entries'''
+        self.logged_in_user()
+
+        response = self.client.post(ADD_ENTRY_URL,
+            data = json.dumps(self.entries), content_type = 'application/json')
+
+        response = self.client.get(GET_ALL_URL,
+        data = json.dumps(self.entries), content_type = 'application/json')
+        self.assertEqual(response.status_code, 200)
+
+    def test_delete_entry(self):
+        '''Test API can delete a diary entry'''
+        self.logged_in_user()
+
+        response = self.client.post(ADD_ENTRY_URL,
+            data = json.dumps(self.entries), content_type = 'application/json')
+
+        response = self.client.get(DELETE_URL,
+        data = json.dumps(self.entries), content_type = 'application/json')
+        self.assertEqual(response.status_code, 200)
+
+    def test_modify_entry(self):
+        '''Test API can modify a diary entry'''
+        self.logged_in_user()
+
+        response = self.client.post(ADD_ENTRY_URL,
+            data = json.dumps(self.entries), content_type = 'application/json')
+
+        response = self.client.put(MODIFY_URL,
+            data = json.dumps(dict(title="Modified title")),content_type = ("application/json"))
+        self.assertEqual(response.status_code, 200)    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
