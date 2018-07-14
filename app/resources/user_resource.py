@@ -30,3 +30,22 @@ class SignupResource(Resource):
         user = user.save()
 
         return {'message': 'Successfully registered', 'user': user}, 201
+        
+
+class LoginResource(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('username', required=True,help='Username cannot be blank', type=str)
+    parser.add_argument('password', required=True, help='Password cannot be blank')
+
+    def post(self):
+        args = LoginResource.parser.parse_args()
+        username = args["username"]
+        password = args["password"]
+
+        user = User.get_user_by_username(username)
+        if not user:
+            return {'message': 'User unavailable'}, 404
+        elif not user.check_password(password):
+            return {'message': 'Wrong password.'}, 401                 
+        else:
+            return {"message": "You are successfully logged in"},200        
