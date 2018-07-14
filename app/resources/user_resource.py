@@ -1,9 +1,14 @@
 from flask import Flask
-from flask_restful import Api, Resource, reqparse
+from flask_restful import Resource, reqparse
 import json
 
+<<<<<<< HEAD
 app = Flask(__name__)
 api = Api(app)
+=======
+from app.models import User
+from app.database import db
+>>>>>>> e670316... Remove app from user resource
 
 class UserSignupAPI(Resource):
     '''Resource for user registration'''
