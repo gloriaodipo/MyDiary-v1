@@ -15,7 +15,7 @@ class UserSignupAPI(Resource):
     def post(self):
         args = UserSignupAPI.parser.parse_args()
 
-        u = User(username=args.get('username'),
+        user = User(username=args.get('username'),
             email=args.get('email'), password=args.get('password'))
     
         username_exists = db.get_user_by_username(args['username'])
@@ -26,7 +26,7 @@ class UserSignupAPI(Resource):
         elif email_exists:
             return {'message': 'User already exists'}, 203
 
-        db.add_user(u)
+        db.add_user(user)
 
         return {'message': 'Successfully registered'}, 201
         
