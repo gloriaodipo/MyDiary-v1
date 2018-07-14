@@ -78,7 +78,33 @@ class Test_Entry_Case(BaseClass):
             data = json.dumps(dict(title="Modified title")),content_type = ("application/json"))
         self.assertEqual(response.status_code, 200)    
 
+    def test_cannot_add_entry_without_login(self):
+        '''Test API cannot add entry if user is not logged in'''
 
+        response = self.client.post(ADD_ENTRY_URL,
+            data = json.dumps(self.entries), content_type = 'application/json')
+        result = json.loads(response.data)
+        self.assertEqual(result["message"], "Please login first")
+        self.assertEqual(response.status_code, 401)
+
+    def test_cannot_get_single_entry(self):
+        '''Test API cannot get a single diary entry without login'''
+        response = self.client.post(ADD_ENTRY_URL,
+            data = json.dumps(self.entries), content_type = 'application/json')
+
+        response = self.client.get (GET_SINGLE_URL,
+            data = json.dumps(self.entries), content_type = 'application/json')
+        self.assertEqual(response.status_code, 401)
+
+    def test_cannot_get_all(self):
+        '''Test API cannot get all diary entries without login'''
+        response = self.client.post(ADD_ENTRY_URL,
+            data = json.dumps(self.entries), content_type = 'application/json')
+
+        response = self.client.get(GET_ALL_URL,
+        data = json.dumps(self.entries), content_type = 'application/json')
+        self.assertEqual(response.status_code, 401)  
+        
 
 
 
