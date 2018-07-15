@@ -9,5 +9,7 @@ install:
 script: 
   - pytest
 
+after_success:
+  -coveralls
 cache: pip
 
