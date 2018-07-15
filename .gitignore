@@ -1,5 +1,6 @@
 .pytest_cache
 .env
+.vscode
 venv/
 .env
 .pytest_cache/

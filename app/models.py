@@ -1,33 +1,53 @@
+from datetime import datetime
+
+class DB():
+    def __init__(self):
+        pass
+    
+    def drop(self):
+        pass
+    
+
+db = DB()
+
 class User():
-    def __init__(self, username, email, password):
-        self.username = username
-        self.email = email
-        self.password = password
+    def __init__(self, username, password, email):
+        pass
 
-    def check_password(self, password):
-        if password == self.password:
-            return True
-        return False
+    def save(self):
+        pass
+    
+    def delete(self):
+        pass
+    
+    def update(self, data):
+        # Validate keys before passing to data.
+        pass
 
-    def user_dict(self):
-        return{
-            'username': self.username,
-            'email': self.email,
-            'password': self.password
-            }
+    def view(self):
+        pass
+    
+    @classmethod
+    def get(cls, id):
+        pass
 
 class Entry():
-    entry_id = 1
+    def __init__(self, title, description, user_id):
+        pass
 
-    def __init__(self, title, description):
-        self.id = Entry.entry_id
-        self.title = title
-        self.description = description
-        Entry.entry_id += 1
+    def save(self):
+        pass
+          
+    def delete(self):
+        pass
+    
+    def update(self, data):
+        # Validate keys before passing to data.
+        pass
 
-    def entry_dict(self):
-        return{
-            'id': self.id,
-            'title': self.title,
-            'description': self.description
-    }        
+    def view(self):
+        pass
+    
+    @classmethod
+    def get(cls, user_id, id=None):
+        pass

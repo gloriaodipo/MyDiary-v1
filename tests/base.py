@@ -1,6 +1,8 @@
 import unittest
 import json
-from . import create_app, db
+from . import create_app
+from app.models import User, Entry, db
+
 SIGNUP_URL = '/api/v1/user/signup'
 LOGIN_URL = '/api/v1/user/login'
 
@@ -18,10 +20,19 @@ class BaseClass(unittest.TestCase):
                     "email":"gloria@gmail.com",
                     "password":"pass"
                     }
-        self.entries = {
+        self.entry_data = {
                     "title": "Freaky friday",
                     "description": "Fun fun fun fun fun fun"
                     }
+
+        self.user1 = User(
+            username='testuser',
+            email='testuser@email.com',
+            password='password')
+        self.entry1 = Entry(
+            title='I saved a dog',
+            description='The dog was cute',
+            user_id=1)
 
     def logged_in_user(self):
         #first create user
@@ -35,5 +46,4 @@ class BaseClass(unittest.TestCase):
 
     def tearDown(self):
         '''Clears the database'''
-        users = []
-        entries = []
+        db.drop()
