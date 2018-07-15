@@ -27,7 +27,6 @@ class TestModels(BaseClass):
     
     def test_get_non_existent_user(self):
         user = User.get(id=3)
-        print(len(db.users))
         self.assertEqual('User does not exist.', user['message'])
     
     def test_get_user(self):
@@ -36,4 +35,50 @@ class TestModels(BaseClass):
         self.assertIsInstance(user, User)
         keys = sorted(list(user.view().keys()))
         self.assertListEqual(keys, sorted(['username', 'email', 'id']))
+    
+    def test_can_save_entry(self):
+        self.user1.save()
+        entry = self.entry1.save()
+        self.assertEqual(1, len(db.entries[1]))
+        self.assertIsInstance(entry.view(), dict)
+    
+    def test_can_update_entry(self):
+        self.user1.save()
+        self.entry1.save()
+        entry = Entry.get(id=1, user_id=1)
+        data = {
+            'title': 'New Title',
+            'description': 'New descriptiom'}
+        entry = entry.update(data=data)
+        self.assertDictContainsSubset(entry, data)
+    
+    def test_can_get_one_entry(self):
+        self.user1.save()
+        self.entry1.save()
+        entry = Entry.get(id=1, user_id=1)
+        self.assertIsInstance(entry, Entry)
+        keys = sorted(list(entry.view().keys()))
+        self.assertListEqual(
+            keys, sorted(['title', 'description', 'user_id', 'last_modified', 'created_at' 'id']))
+    
+    def test_can_get_all_entries(self):
+        self.user1.save()
+        self.entry1.save()
+        entry = Entry.get(user_id=1)
+        self.assertIsInstance(entry, dict)
+        self.assertEqual(1, len(entry))
+
+    def test_can_delete_an_entry(self):
+        self.user1.save()
+        self.entry1.save()
+        entry = Entry.get(user_id=1, id=1)
+        self.assertEqual(1, len(entry))
+        entry.delete()
+        self.assertEqual(0, len(entry))
+
+    def test_cannot_get_non_existent_entry(self):
+        self.user1.save()
+        entry = Entry.get(id=2, user_id=1)
+        self.assertEqual('User does not have any entries', entry['message'])
+    
     
