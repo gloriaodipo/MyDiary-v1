@@ -44,7 +44,7 @@ class Test_User_Case(BaseClass):
         self.assertEqual(result["message"], "You are successfully logged in")
         self.assertEqual(response.status_code, 200)
 
-    def test_wrong_login(self):
+    def test_wrong_password(self):
         """Test API cannot authenticate login when wrong password is used (POST request)"""
         response = self.client.post(LOGIN_URL,
             data=json.dumps({'username': 'gloriaodipo', 'password': 'wrong_password'}),
@@ -61,3 +61,6 @@ class Test_User_Case(BaseClass):
         result = json.loads(response.data)
         self.assertEqual(result['message'], 'User unavailable')
         self.assertEqual(response.status_code, 404)
+
+    def test_login_without_all_fields(self):
+        pass    
