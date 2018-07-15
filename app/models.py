@@ -53,8 +53,24 @@ class User():
         if not user:
             return {'message': 'User does not exist.'}
         return user
-
     
+    @classmethod
+    def get_user_by_email(cls, email):
+        for id_ in db.users:
+            user = db.users.get(id_)
+            if user.email == email:
+                return user
+        return None
+    
+    @classmethod
+    def get_user_by_username(cls, username):
+        for id_ in db.users:
+            user = db.users.get(id_)
+            if user.username == username:
+                return user
+        return None
+    
+   
 class Entry():
     def __init__(self, title, description, user_id):
         self.title = title
