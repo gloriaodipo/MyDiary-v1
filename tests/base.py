@@ -33,6 +33,10 @@ class BaseClass(unittest.TestCase):
             title='I saved a dog',
             description='The dog was cute',
             user_id=1)
+        self.test_user = User(
+            username='gloria',
+            email='glo@mail.com',
+            password='password')
 
     def logged_in_user(self):
         #first create user

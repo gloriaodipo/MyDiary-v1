@@ -39,8 +39,9 @@ class Test_User_Case(BaseClass):
         
     def test_login(self):
         """Test API can successfully log in registered users using username and password (POST request)"""
+        self.test_user.save()
         response = self.client.post(LOGIN_URL,
-            data=json.dumps({'username': 'gloriaodipo', 'password': 'guess'}),
+            data=json.dumps({'username': 'gloria', 'password': 'password'}),
             content_type='application/json')
         self.assertEqual(response.status_code, 200)
         result = json.loads(response.data.decode())
@@ -49,8 +50,9 @@ class Test_User_Case(BaseClass):
 
     def test_wrong_password(self):
         """Test API cannot authenticate login when wrong password is used (POST request)"""
+        self.test_user.save()
         response = self.client.post(LOGIN_URL,
-            data=json.dumps({'username': 'gloriaodipo', 'password': 'wrong_password'}),
+            data=json.dumps({'username': 'gloria', 'password': 'wrong_password'}),
             content_type='application/json')
         self.assertEqual(response.status_code, 401)
         result = json.loads(response.data.decode())
