@@ -40,7 +40,7 @@ class TestModels(BaseClass):
         self.user1.save()
         entry = self.entry1.save()
         self.assertEqual(1, len(db.entries[1]))
-        self.assertIsInstance(entry.view(), dict)
+        self.assertIsInstance(entry, dict)
     
     def test_can_update_entry(self):
         self.user1.save()
@@ -50,7 +50,7 @@ class TestModels(BaseClass):
             'title': 'New Title',
             'description': 'New descriptiom'}
         entry = entry.update(data=data)
-        self.assertDictContainsSubset(entry, data)
+        self.assertDictContainsSubset(data, entry)
     
     def test_can_get_one_entry(self):
         self.user1.save()
@@ -59,7 +59,7 @@ class TestModels(BaseClass):
         self.assertIsInstance(entry, Entry)
         keys = sorted(list(entry.view().keys()))
         self.assertListEqual(
-            keys, sorted(['title', 'description', 'user_id', 'last_modified', 'created_at' 'id']))
+            keys, sorted(['title', 'description', 'user_id', 'last_modified', 'created_at', 'id']))
     
     def test_can_get_all_entries(self):
         self.user1.save()
@@ -72,9 +72,9 @@ class TestModels(BaseClass):
         self.user1.save()
         self.entry1.save()
         entry = Entry.get(user_id=1, id=1)
-        self.assertEqual(1, len(entry))
+        self.assertEqual(1, len(db.entries[1]))
         entry.delete()
-        self.assertEqual(0, len(entry))
+        self.assertEqual(0, len(db.entries[1]))
 
     def test_cannot_get_non_existent_entry(self):
         self.user1.save()
