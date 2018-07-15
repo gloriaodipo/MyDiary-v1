@@ -1,4 +1,5 @@
 from datetime import datetime
+from werkzeug.security import check_password_hash, generate_password_hash
 
 class DB():
     def __init__(self):
@@ -19,7 +20,7 @@ db = DB()
 class User():
     def __init__(self, username, password, email):
         self.username = username
-        self.password = password
+        self.password = generate_password_hash(password)
         self.email = email
         self.id = None
         self.created_at = datetime.utcnow().isoformat()
@@ -32,6 +33,11 @@ class User():
         db.user_count += 1
         db.entries.update({self.id: {}})
         return self.view()
+    
+    def validate_password(self, password):
+        if check_password_hash(self.password, password):
+            return True
+        return False
     
     def delete(self):
         del db.users[self.id]

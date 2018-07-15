@@ -12,8 +12,10 @@ def create_app(config_name):
     app.config.from_object(config.app_config[config_name])
     app.url_map.strict_slashes = False
 
-    from app.resources.user_resource import SignupResource
+    from app.resources.user_resource import SignupResource, LoginResource
 
     api.add_resource(SignupResource, '/api/v1/user/signup')
 
+    api.add_resource(LoginResource, '/api/v1/user/login')
+    
     return app

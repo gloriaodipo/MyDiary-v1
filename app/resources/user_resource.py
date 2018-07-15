@@ -1,6 +1,5 @@
 from flask import Flask
 from flask_restful import Resource, reqparse
-from werkzeug.security import generate_password_hash, check_password_hash
 from app.models import User
 
 
@@ -18,7 +17,6 @@ class SignupResource(Resource):
         email = args.get('email')
         if password.strip() == '' or username.strip() == '' or email.strip() == '':
             return {'message': 'All fields are required.'}, 400
-        password_hash = generate_password_hash(password)
 
         username_exists = User.get_user_by_username(username=args['username'])
         email_exists = User.get_user_by_email(email=args['email'])
@@ -26,7 +24,29 @@ class SignupResource(Resource):
         if username_exists or email_exists:
             return {'message': 'User already exists'}, 203
         
-        user = User(username=args.get('username'), email=args.get('email'), password=password_hash)
+        user = User(username=args.get('username'), email=args.get('email'), password=password)
         user = user.save()
 
         return {'message': 'Successfully registered', 'user': user}, 201
+        
+
+class LoginResource(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('username', required=True,help='Username cannot be blank', type=str)
+    parser.add_argument('password', required=True, help='Password cannot be blank')
+
+    def post(self):
+        args = LoginResource.parser.parse_args()
+        username = args["username"]
+        password = args["password"]
+        if username.strip() == '' or password.strip() == '':
+            return {'message': 'All fields are required'}, 400
+
+        user = User.get_user_by_username(username)
+        if not user:
+            return {'message': 'User unavailable'}, 404
+        
+        is_logged_in = user.validate_password(password)
+        if not is_logged_in:
+            return {'message': 'Wrong password.', 'is_logged_in': is_logged_in}, 401                 
+        return {"message": "You are successfully logged in", 'user': user.view(), 'is_logged_in': is_logged_in},200        
