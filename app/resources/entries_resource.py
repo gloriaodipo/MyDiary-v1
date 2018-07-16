@@ -1,12 +1,15 @@
 from flask import Flask
-from flask_restful import Api, Resource
+from flask_restful import Resource, reqparse
 
-app = Flask(__name__)
-api = Api(app)
+from app.models import Entry
 
-class Entry_API(Resource):
+class EntryResource(Resource):
     '''Resource for diary entries'''
-    def post(self):
+    parser = reqparse.RequestParser()
+    parser.add_argument('title', required = True, type=str)
+    parser.add_argument('description', required = True, type=str)
+
+    def post(self, user_id):
         pass
 
     def get(self):

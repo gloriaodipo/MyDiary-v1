@@ -15,7 +15,6 @@ class Test_User_Case(BaseClass):
         self.assertEqual(response.status_code, 201)
         result = json.loads(response.data.decode())
         self.assertEqual(result["message"], "Successfully registered")
-        
 
     def test_wrong_signup(self):
         """Test API cannot successfully register a new user if any field is left blank(POST request)"""
@@ -26,7 +25,6 @@ class Test_User_Case(BaseClass):
         result = json.loads(response.data.decode())
         self.assertEqual(result["message"], "All fields are required.")
         
-
     def test_cannot_signup_twice(self):
         """Test API cannot register a user twice(POST request)"""
         self.client.post(SIGNUP_URL,
@@ -47,7 +45,6 @@ class Test_User_Case(BaseClass):
         result = json.loads(response.data.decode())
         self.assertEqual(result["message"], "You are successfully logged in")
         
-
     def test_wrong_password(self):
         """Test API cannot authenticate login when wrong password is used (POST request)"""
         self.test_user.save()
@@ -56,9 +53,8 @@ class Test_User_Case(BaseClass):
             content_type='application/json')
         self.assertEqual(response.status_code, 401)
         result = json.loads(response.data.decode())
-        self.assertEqual(result['message'], 'Wrong password.')
+        self.assertEqual(result['message'], 'Username or password is wrong.')
         
-
     def test_login_nonexistent_user(self):
         """Test API cannot authenticate login when user is nonexistent (POST request)"""
         response = self.client.post(LOGIN_URL,
@@ -67,7 +63,3 @@ class Test_User_Case(BaseClass):
         self.assertEqual(response.status_code, 404)
         result = json.loads(response.data.decode())
         self.assertEqual(result['message'], 'User unavailable')
-        
-
-    def test_login_without_all_fields(self):
-        pass    

@@ -1,4 +1,6 @@
-from datetime import datetime
+from datetime import datetime, timedelta
+from flask import current_app
+import jwt
 from werkzeug.security import check_password_hash, generate_password_hash
 
 class DB():
@@ -14,7 +16,6 @@ class DB():
         self.user_count = 0
         self.entry_count = 0
     
-
 db = DB()
 
 class User():
@@ -27,7 +28,6 @@ class User():
         self.last_modified = datetime.utcnow().isoformat()
 
     def save(self):
-        # db.user_count
         setattr(self, 'id', db.user_count + 1)
         db.users.update({self.id: self})
         db.user_count += 1
@@ -53,6 +53,19 @@ class User():
         keys = ['username', 'email', 'id']
         return {key: getattr(self, key) for key in keys}
     
+    def generate_token(self):
+        payload = {'exp': datetime.utcnow()+timedelta(minutes=60),
+                    'iat': datetime.utcnow(),
+                    'username': self.username,
+                    'id': self.id}
+        token = jwt.encode(payload, str(current_app.config.get('SECRET')), algorithm='HS256')
+        return token.decode()
+    
+    @staticmethod
+    def decode_token(token):
+        payload = jwt.decode(token, str(current_app.config.get('SECRET')), algorithms=['HS256'])
+        return payload['username']
+    
     @classmethod
     def get(cls, id):
         user = db.users.get(id)
@@ -75,7 +88,6 @@ class User():
             if user.username == username:
                 return user
         return None
-    
    
 class Entry():
     def __init__(self, title, description, user_id):
