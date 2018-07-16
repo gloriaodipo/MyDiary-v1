@@ -10,7 +10,7 @@ script:
   - python -m pytest --cov-report term-missing --cov=app
 
 after_success:
-  -coveralls
+  - coveralls
 
 cache: pip
 
