@@ -16,8 +16,7 @@ def create_app(config_name):
     from app.resources.entries_resource import EntryResource
 
     api.add_resource(SignupResource, '/api/v1/user/signup')
-
     api.add_resource(LoginResource, '/api/v1/user/login')
-    api.add_resource(EntryResource, '/api/v1/user/entry', '/api/v1/user/entries')
+    api.add_resource(EntryResource, '/api/v1/user/entries', '/api/v1/user/entries/<int:entry_id>')
     
     return app

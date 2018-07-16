@@ -64,7 +64,7 @@ class User():
     @staticmethod
     def decode_token(token):
         payload = jwt.decode(token, str(current_app.config.get('SECRET')), algorithms=['HS256'])
-        return payload['username']
+        return payload
     
     @classmethod
     def get(cls, id):
@@ -123,5 +123,8 @@ class Entry():
         if not user_entries:
             return {'message': 'User does not have any entries'}
         if id:
-            return user_entries[id]
+            entry = user_entries.get(id)
+            if entry:
+                return entry
+            return {'message': 'User does not have that entry'}
         return user_entries
