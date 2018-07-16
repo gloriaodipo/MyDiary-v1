@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_restful import Resource, reqparse
-from app.models import User
 
+from app.models import User
 
 class SignupResource(Resource):
     '''Resource for user registration'''
@@ -28,7 +28,6 @@ class SignupResource(Resource):
         user = user.save()
 
         return {'message': 'Successfully registered', 'user': user}, 201
-        
 
 class LoginResource(Resource):
     parser = reqparse.RequestParser()
@@ -45,8 +44,7 @@ class LoginResource(Resource):
         user = User.get_user_by_username(username)
         if not user:
             return {'message': 'User unavailable'}, 404
-        
-        is_logged_in = user.validate_password(password)
-        if not is_logged_in:
-            return {'message': 'Wrong password.', 'is_logged_in': is_logged_in}, 401                 
-        return {"message": "You are successfully logged in", 'user': user.view(), 'is_logged_in': is_logged_in},200        
+        if user.validate_password(password):
+            token = user.generate_token()    
+            return {"message": "You are successfully logged in", 'user': user.view(), 'token':token}, 200
+        return {"message": "Username or password is wrong."}, 401
