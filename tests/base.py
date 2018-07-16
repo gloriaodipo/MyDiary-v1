@@ -44,9 +44,11 @@ class BaseClass(unittest.TestCase):
         data = json.dumps(self.user_data), content_type = 'application/json')
 
         #then log in user
-        self.client.post(LOGIN_URL,
-        data=json.dumps({'username': 'gloriaodipo', 'password': 'guess'}),
+        res = self.client.post(LOGIN_URL,
+        data=json.dumps({'username': 'gloria', 'password': 'pass'}),
         content_type='application/json')
+        
+        return res
 
     def tearDown(self):
         '''Clears the database'''
