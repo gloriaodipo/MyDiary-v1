@@ -12,10 +12,9 @@ def token_required(func):
             if authorization_header:
                 access_token = authorization_header.split(' ')[1]
             if access_token:
-                username = User.decode_token(access_token)
-                user = User.get_user_by_username(username=username).first()
-                return func(user=user, *args, **kwargs)
+                user_id = User.decode_token(access_token)['id']
+                return func(user_id=user_id, *args, **kwargs)
             return {'message':"Please login first, your session might have expired"}, 401
         except Exception as e:
-            return {'message': 'An error occured', 'error':str(e)},400
+            return {'message': 'An error occured while decoding token.', 'error':str(e)},400
     return decorated
