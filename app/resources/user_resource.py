@@ -2,7 +2,6 @@ from flask import Flask
 from flask_restful import Resource, reqparse
 
 from app.models import User
-from app.decorators import token_required
 
 class SignupResource(Resource):
     '''Resource for user registration'''
