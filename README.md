@@ -46,7 +46,7 @@ virtualenv -name of virtualenv-
   
  Note: If you do not have python3 installed globally, please run this command when creating a virtual environment:
  
- virtualenv -p python3 <name of virtualenv>
+ virtualenv -p python3 -name of virtualenv-
 
 Activate the virtualenv:
 
