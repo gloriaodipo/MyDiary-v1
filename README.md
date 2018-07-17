@@ -30,7 +30,7 @@ sudo apt-get install python-pip
 
 Clone this repository:
 
-git clone https://github.com/gloriaodipo/Book-A-Meal-db.git
+git clone https://github.com/gloriaodipo/MyDiary-v1.git
 
 Get into the root directory:
 
