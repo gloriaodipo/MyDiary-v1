@@ -42,14 +42,15 @@ pip install virtualenv
 
 Create a virtual environment in the root directory:
 
-virtualenv <name of virtualenv>
+virtualenv -name of virtualenv-
   
  Note: If you do not have python3 installed globally, please run this command when creating a virtual environment:
+ 
  virtualenv -p python3 <name of virtualenv>
 
 Activate the virtualenv:
 
-source <name of virtualenv>/bin/activate
+source name of virtualenv/bin/activate
 
 Install the requirements of the project:
 
