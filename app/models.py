@@ -11,14 +11,20 @@ class DB():
         self.entry_count = 0
     
     def drop(self):
-        self.users = {}
-        self.entries = {}
-        self.user_count = 0
-        self.entry_count = 0
+        self.__init__()
     
 db = DB()
 
-class User():
+class base():
+    '''Base class to be inherited by User and Entry classes'''   
+    def update(self, data):
+        # Validate keys before passing to data.
+        for key in data:
+            setattr(self, key, data[key])
+        setattr(self, 'last_modified', datetime.utcnow().isoformat())    
+        return self.view()
+
+class User(base):
     def __init__(self, username, password, email):
         self.username = username
         self.password = generate_password_hash(password)
@@ -42,17 +48,6 @@ class User():
     def delete(self):
         del db.users[self.id]
     
-    def update(self, data):
-        # Validate keys before passing to data.
-        for key in data:
-            setattr(self, key, data[key])
-        setattr(self, 'last_modified', datetime.utcnow().isoformat())    
-        return self.view()
-
-    def view(self):
-        keys = ['username', 'email', 'id']
-        return {key: getattr(self, key) for key in keys}
-    
     def generate_token(self):
         payload = {'exp': datetime.utcnow()+timedelta(minutes=60),
                     'iat': datetime.utcnow(),
@@ -66,6 +61,10 @@ class User():
         payload = jwt.decode(token, str(current_app.config.get('SECRET')), algorithms=['HS256'])
         return payload
     
+    def view(self):
+        keys = ['username', 'email', 'id']
+        return {key: getattr(self, key) for key in keys}
+
     @classmethod
     def get(cls, id):
         user = db.users.get(id)
@@ -89,7 +88,7 @@ class User():
                 return user
         return None
    
-class Entry():
+class Entry(base):
     def __init__(self, title, description, user_id):
         self.title = title
         self.description = description
@@ -106,13 +105,6 @@ class Entry():
     def delete(self):
         del db.entries[self.user_id][self.id]
     
-    def update(self, data):
-        # Validate keys before passing to data.
-        for key in data:
-            setattr(self, key, data[key])
-        setattr(self, 'last_modified', datetime.utcnow().isoformat())
-        return self.view()
-
     def view(self):
         keys = ('id', 'title', 'description', 'user_id', 'last_modified', 'created_at')
         return {key: getattr(self, key) for key in keys}

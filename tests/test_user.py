@@ -23,7 +23,7 @@ class Test_User_Case(BaseClass):
             content_type = 'application/json')
         self.assertEqual(response.status_code, 400)
         result = json.loads(response.data.decode())
-        self.assertEqual(result["message"], "All fields are required.")
+        self.assertEqual(result["message"], "All fields are required")
         
     def test_cannot_signup_twice(self):
         """Test API cannot register a user twice(POST request)"""

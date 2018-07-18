@@ -2,6 +2,7 @@ from flask import Flask
 from flask_restful import Resource, reqparse
 
 from app.models import User
+from app.decorators import blank
 
 class SignupResource(Resource):
     '''Resource for user registration'''
@@ -15,8 +16,8 @@ class SignupResource(Resource):
         password = args.get('password')
         username = args.get('username')
         email = args.get('email')
-        if password.strip() == '' or username.strip() == '' or email.strip() == '':
-            return {'message': 'All fields are required.'}, 400
+        if blank(password) or blank(username) or blank(email):
+            return {'message': 'All fields are required'}, 400
 
         username_exists = User.get_user_by_username(username=args['username'])
         email_exists = User.get_user_by_email(email=args['email'])
@@ -38,7 +39,7 @@ class LoginResource(Resource):
         args = LoginResource.parser.parse_args()
         username = args["username"]
         password = args["password"]
-        if username.strip() == '' or password.strip() == '':
+        if blank(username) or blank(password) == '':
             return {'message': 'All fields are required'}, 400
 
         user = User.get_user_by_username(username)
