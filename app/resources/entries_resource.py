@@ -2,7 +2,7 @@ from flask import Flask, request
 from flask_restful import Resource, reqparse
 
 from app.models import Entry
-from app.decorators import token_required
+from app.decorators import token_required, blank
 
 class EntryResource(Resource):
     '''Resource for diary entries'''
@@ -16,7 +16,7 @@ class EntryResource(Resource):
         title = args.get('title', '')
         description = args.get('description', '')
 
-        if title.strip() == '' or description.strip() == '':
+        if blank(title) or blank(description):
             return {'message': 'All fields are required'}, 400
         entry =  Entry(title=title, user_id=user_id, description=description)
         entry = entry.save()
@@ -41,9 +41,9 @@ class EntryResource(Resource):
         title = post_data.get('title', None)
         description = post_data.get('description', None)
         data = {}
-        if title and title.strip() != '':
+        if title and blank(title) != '':
             data.update({'title': title})
-        if description and description.strip() != '':
+        if description and blank(description) != '':
             data.update({'description', description})
         
         entry = entry.update(data=data)

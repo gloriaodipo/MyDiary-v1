@@ -18,3 +18,9 @@ def token_required(func):
         except Exception as e:
             return {'message': 'An error occured while decoding token.', 'error':str(e)},400
     return decorated
+
+def blank(var):
+    '''checks if any required field is blank''' 
+    if var.strip() == '':
+        return 'All fields are required'
+    return None    
