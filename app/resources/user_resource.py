@@ -1,8 +1,9 @@
 from flask import Flask
 from flask_restful import Resource, reqparse
+import re
 
 from app.models import User
-from app.decorators import blank
+from app.decorators import is_blank
 
 class SignupResource(Resource):
     '''Resource for user registration'''
@@ -16,8 +17,21 @@ class SignupResource(Resource):
         password = args.get('password')
         username = args.get('username')
         email = args.get('email')
-        if blank(password) or blank(username) or blank(email):
+
+        email_format = re.compile(
+        r"(^[a-zA-Z0-9_.-]+@[a-zA-Z-]+\.[a-zA-Z-]+$)")
+        username_format = re.compile(r"(^[A-Za-z]+$)")
+
+        if not (re.match(username_format, username)):
+            return {'message' : 'Invalid username'}, 400
+        elif not (re.match(email_format, email)):
+            return {'message': 'Invalid email. Ensure email is of the form example@mail.com'}, 400
+        if len(username) < 4:
+            return {'message' : 'Username should be atleast 4 characters'}, 400
+        if is_blank(password) or is_blank(username) or is_blank(email):
             return {'message': 'All fields are required'}, 400
+        if len(password) < 8:
+            return {'message' : 'Password should be atleast 8 characters'}, 400
 
         username_exists = User.get_user_by_username(username=args['username'])
         email_exists = User.get_user_by_email(email=args['email'])
@@ -39,7 +53,7 @@ class LoginResource(Resource):
         args = LoginResource.parser.parse_args()
         username = args["username"]
         password = args["password"]
-        if blank(username) or blank(password) == '':
+        if is_blank(username) or is_blank(password) == '':
             return {'message': 'All fields are required'}, 400
 
         user = User.get_user_by_username(username)

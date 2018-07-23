@@ -34,7 +34,43 @@ class Test_User_Case(BaseClass):
         self.assertEqual(response2.status_code, 203)
         result = json.loads(response2.data.decode())
         self.assertEqual(result["message"], "User already exists")
+
+    def test_cannot_signup_with_invalid_username(self):
+        """Test API cannot successfully register user if username invalid(POST request)"""
+        response = self.client.post(SIGNUP_URL,
+            data = json.dumps({'username': '#$gloria', 'email':'godipo@gmail.com', 'password':'passw'}) ,
+            content_type = 'application/json')
+        self.assertEqual(response.status_code, 400)
+        result = json.loads(response.data.decode())
+        self.assertEqual(result["message"], "Invalid username")
+
+    def test_cannot_signup_with_wrong_email_format(self):
+        """Test API cannot successfully register user if email is invalid(POST request)"""
+        response = self.client.post(SIGNUP_URL,
+            data = json.dumps({'username': 'gloria', 'email':'godipogmail.com', 'password':'passw'}) ,
+            content_type = 'application/json')
+        self.assertEqual(response.status_code, 400)
+        result = json.loads(response.data.decode())
+        self.assertEqual(result["message"], "Invalid email. Ensure email is of the form example@mail.com")
         
+    def test_cannot_signup_with_short_username(self):
+        """Test API cannot successfully register user if username is less than 4 char.(POST request)"""
+        response = self.client.post(SIGNUP_URL,
+            data = json.dumps({'username': 'glo', 'email':'godipo@gmail.com', 'password':'password'}) ,
+            content_type = 'application/json')
+        self.assertEqual(response.status_code, 400)
+        result = json.loads(response.data.decode())
+        self.assertEqual(result["message"], "Username should be atleast 4 characters")
+
+    def test_cannot_signup_with_short_password(self):
+        """Test API cannot successfully register user if password is less than 8 char.(POST request)"""
+        response = self.client.post(SIGNUP_URL,
+            data = json.dumps({'username': 'gloriao', 'email':'godipo@gmail.com', 'password':'pass'}) ,
+            content_type = 'application/json')
+        self.assertEqual(response.status_code, 400)
+        result = json.loads(response.data.decode())
+        self.assertEqual(result["message"], "Password should be atleast 8 characters")
+
     def test_login(self):
         """Test API can successfully log in registered users using username and password (POST request)"""
         self.test_user.save()
