@@ -18,7 +18,7 @@ class BaseClass(unittest.TestCase):
         self.user_data = {
                     "username":"gloria", 
                     "email":"gloria@gmail.com",
-                    "password":"pass"
+                    "password":"mypassword"
                     }
         self.entry_data = {
                     "title": "Freaky friday",
@@ -45,7 +45,7 @@ class BaseClass(unittest.TestCase):
 
         #then log in user
         res = self.client.post(LOGIN_URL,
-        data=json.dumps({'username': 'gloria', 'password': 'pass'}),
+        data=json.dumps({'username': 'gloria', 'password': 'mypassword'}),
         content_type='application/json')
         
         return res
