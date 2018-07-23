@@ -4,6 +4,7 @@ import jwt
 from werkzeug.security import check_password_hash, generate_password_hash
 
 class DB():
+    '''Class for mock database'''
     def __init__(self):
         self.users = {}
         self.entries = {}
@@ -15,7 +16,7 @@ class DB():
     
 db = DB()
 
-class base():
+class Base():
     '''Base class to be inherited by User and Entry classes'''   
     def update(self, data):
         # Validate keys before passing to data.
@@ -24,7 +25,8 @@ class base():
         setattr(self, 'last_modified', datetime.utcnow().isoformat())    
         return self.view()
 
-class User(base):
+class User(Base):
+    '''Class to model user'''
     def __init__(self, username, password, email):
         self.username = username
         self.password = generate_password_hash(password)
@@ -88,7 +90,8 @@ class User(base):
                 return user
         return None
    
-class Entry(base):
+class Entry(Base):
+    '''Class to model entry'''
     def __init__(self, title, description, user_id):
         self.title = title
         self.description = description
@@ -99,6 +102,7 @@ class Entry(base):
 
     def save(self):
         setattr(self, 'id', db.entry_count + 1)
+        db.entry_count += 1
         db.entries[self.user_id].update({self.id : self})
         return self.view()
           
