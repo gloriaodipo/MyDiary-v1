@@ -24,3 +24,4 @@ def is_blank(var):
     if var.strip() == '':
         return 'All fields are required'
     return None
+    

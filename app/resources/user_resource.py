@@ -13,6 +13,7 @@ class SignupResource(Resource):
     parser.add_argument('password', required=True, help='Password cannot be blank', type=str)
 
     def post(self):
+        '''Method for signing up a user'''
         args = SignupResource.parser.parse_args()
         password = args.get('password')
         username = args.get('username')
@@ -45,11 +46,13 @@ class SignupResource(Resource):
         return {'message': 'Successfully registered', 'user': user}, 201
 
 class LoginResource(Resource):
+    '''Resource for user login'''
     parser = reqparse.RequestParser()
     parser.add_argument('username', required=True,help='Username cannot be blank', type=str)
     parser.add_argument('password', required=True, help='Password cannot be blank')
 
     def post(self):
+        '''Method for logging in a signed up user'''
         args = LoginResource.parser.parse_args()
         username = args["username"]
         password = args["password"]

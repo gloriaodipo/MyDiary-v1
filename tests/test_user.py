@@ -99,3 +99,4 @@ class Test_User_Case(BaseClass):
         self.assertEqual(response.status_code, 404)
         result = json.loads(response.data.decode())
         self.assertEqual(result['message'], 'User unavailable')
+        

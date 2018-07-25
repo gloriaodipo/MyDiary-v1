@@ -12,6 +12,7 @@ class EntryResource(Resource):
 
     @token_required
     def post(self, user_id):
+        '''Method for adding entry'''
         args = EntryResource.parser.parse_args()
         title = args.get('title', '')
         description = args.get('description', '')
@@ -24,6 +25,7 @@ class EntryResource(Resource):
 
     @token_required
     def get(self, user_id, entry_id=None):
+        '''Method for getting both single and all entries'''
         user_entry = Entry.get(user_id=user_id, id=entry_id)
         if isinstance(user_entry, Entry):
             return {'message': 'Entry found', 'entry': user_entry.view()}, 200
@@ -34,6 +36,7 @@ class EntryResource(Resource):
 
     @token_required
     def put(self,user_id, entry_id):
+        '''Method for modifying an entry'''
         entry = Entry.get(user_id=user_id, id=entry_id)
         if isinstance(entry, dict):
             return entry, 404
@@ -51,6 +54,7 @@ class EntryResource(Resource):
 
     @token_required
     def delete(self, user_id, entry_id):
+        '''Method for deleting an entry'''
         user_entry = Entry.get(user_id=user_id, id=entry_id)
         if isinstance (user_entry, Entry):
             user_entry.delete()

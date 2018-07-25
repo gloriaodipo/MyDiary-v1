@@ -1,5 +1,6 @@
 import unittest
 import json
+
 from . import create_app
 from app.models import User, Entry, db
 
@@ -53,3 +54,4 @@ class BaseClass(unittest.TestCase):
     def tearDown(self):
         '''Clears the database'''
         db.drop()
+        
