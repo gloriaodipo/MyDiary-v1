@@ -18,43 +18,45 @@ MyDiary is an online journal where users can pen down their thoughts and feeling
 - [Pivotal Tracker](www.pivotaltracker.com) (A project management tool)
 - [Pytest](https://docs.pytest.org/en/latest/) (Tool for testing)
 
+The app is hosted on [heroku](https://mydiary0.herokuapp.com/)
+
 ## Getting Started:
 
-To start this app, please follow the instructions below:
+**To start this app, please follow the instructions below:**
 
-On your terminal:
+**On your terminal:**
 
 Install pip:
 
-sudo apt-get install python-pip
+  $ sudo apt-get install python-pip
 
 Clone this repository:
 
-git clone https://github.com/gloriaodipo/MyDiary-v1.git
+  $ git clone https://github.com/gloriaodipo/MyDiary-v1.git
 
 Get into the root directory:
 
-cd MyDiary-v1/
+  $ cd MyDiary-v1/
 
 Install virtualenv:
 
-pip install virtualenv
+  $ pip install virtualenv
 
 Create a virtual environment in the root directory:
 
-virtualenv -name of virtualenv-
+  $ virtualenv -name of virtualenv-
   
  Note: If you do not have python3 installed globally, please run this command when creating a virtual environment:
  
- virtualenv -p python3 -name of virtualenv-
+   $ virtualenv -p python3 -name of virtualenv-
 
 Activate the virtualenv:
 
-source name of virtualenv/bin/activate
+  $ source name of virtualenv/bin/activate
 
 Install the requirements of the project:
 
-pip install -r requirements.txt
+  $ pip install -r requirements.txt
 
 Create a file in the root directory called .env and add the two lines below
 
@@ -64,12 +66,12 @@ Create a file in the root directory called .env and add the two lines below
 
 Activate the env variables:
 
-source .env
+  $ source .env
 
 Run the application:
 
-python run.py
+  $ python run.py
 
 To run tests:
 
-pytest
+  $ pytest
