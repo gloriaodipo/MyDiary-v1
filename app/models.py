@@ -69,7 +69,7 @@ class User(Base):
         return payload
     
     def view(self):
-        '''Method to display user details after saving'''
+        '''Method to jsonify object user'''
         keys = ['username', 'email', 'id']
         return {key: getattr(self, key) for key in keys}
 
@@ -121,7 +121,7 @@ class Entry(Base):
         del db.entries[self.user_id][self.id]
     
     def view(self):
-        '''Method to display entry after saving'''
+        '''Method to jsonify entry object'''
         keys = ('id', 'title', 'description', 'user_id', 'last_modified', 'created_at')
         return {key: getattr(self, key) for key in keys}
     
